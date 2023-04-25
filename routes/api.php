@@ -23,8 +23,5 @@ Route::get('/users/{id}', [user::class, 'users']);
 Route::delete('/users/{id}',[user::class, 'delete']);
 Route::post('/users/create',[user::class, 'create']);
 Route::put('/update/{id}', [user::class, 'update']);
-Route::get('/users',function (Request $request){
-    return response()->json([
-        'name'=> $request->users()->name,
-    ]);
-})->middleware('auth:api');
+Route::post('/users/login', [user::class, 'login']);
+Route::post('/users/forgotpass', [user::class, 'forgotpass']);
