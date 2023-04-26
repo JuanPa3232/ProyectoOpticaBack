@@ -45,7 +45,7 @@ class user extends Controller
         ->get();
         if ($check->isEmpty()) {
         $create = new users();
-        $create->usuario = $data['usuario'];
+        $create->username = $data['username'];
         $create->name = $data['name'];
         $create->lastname = $data['lastname'];
         $create->email = $data['email'];
@@ -65,7 +65,7 @@ class user extends Controller
    
            $data = $request->json()->all();
            $update = users::find($id);
-           $update->usuario = $data['usuario'];
+           $update->username = $data['username'];
            $update->name = $data['name'];
            $update->lastname = $data['lastname'];
            $update->email = $data['email'];
