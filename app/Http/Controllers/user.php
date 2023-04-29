@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\users;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\RecoverPassword;
+use App\Mail\DemoMail;
 use DB;
 
 class user extends Controller
@@ -37,12 +37,17 @@ class user extends Controller
        }
        public function create(Request $request)
     {
+        $request->validate([
+        'email' => 'required|string|email|unique:users,email|max:255|'
+    ]);
+
         $data = $request->json()->all();
         $email= $data['email'];
         $check=DB::table('users')
         ->select('id')
         ->where('email', $email)
         ->get();
+
         if ($check->isEmpty()) {
         $create = new users();
         $create->username = $data['username'];
@@ -54,6 +59,10 @@ class user extends Controller
         $create->used = $data['used'];
         $create->password = $data['password'];
         $create->save();
+        // Verificar que el correo electrónico es válido
+        if (!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
+            return response()->json(['message' => 'Correo electrónico inválido'], 422);
+    }
         return response()->json($create, 201);
         } else {
             return response()->json(["message" => "El correo no esta registrado"],204);
@@ -103,7 +112,7 @@ class user extends Controller
             return response()->json(["message" => "El correo ingresado no esta registrado"],204);
         } else {
             
-            Mail::to($email)->send(new RecoverPassword($recover));
+            Mail::to($email)->send(new DemoMail($mailData));
             return response()->json($email,200);
         }
     }

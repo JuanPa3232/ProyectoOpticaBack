@@ -84,6 +84,14 @@ return [
                 'log',
             ],
         ],
+        'ftp' => [
+            'transport' => 'ftp',
+            'host' => env('MAIL_FTP_HOST'),
+            'port' => env('MAIL_FTP_PORT', 21),
+            'encryption' => env('MAIL_FTP_ENCRYPTION', 'tls'),
+            'username' => env('MAIL_FTP_USERNAME'),
+            'password' => env('MAIL_FTP_PASSWORD'),
+        ],
     ],
 
     /*
@@ -101,6 +109,7 @@ return [
         'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
+    
 
     /*
     |--------------------------------------------------------------------------

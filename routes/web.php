@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
+use App\Mail\DemoMail;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -16,8 +18,9 @@ use App\Models\User;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return ;
 });
+
 
 Route::get('/login-google', function () {
     return Socialite::driver('google')->redirect();
@@ -41,5 +44,8 @@ Route::get('/google-callback', function () {
     }
 
     return redirect('/dashboard');
+
 });
+
+
 
