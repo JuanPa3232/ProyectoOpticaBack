@@ -35,12 +35,10 @@ class user extends Controller
             return response()->json(['error' => 'No existe ese id del usuario'], 401, []);
         }
        }
+
+
        public function create(Request $request)
     {
-        $request->validate([
-        'email' => 'required|string|email|unique:users,email|max:255|'
-    ]);
-
         $data = $request->json()->all();
         $email= $data['email'];
         $check=DB::table('users')
@@ -112,8 +110,10 @@ class user extends Controller
             return response()->json(["message" => "El correo ingresado no esta registrado"],204);
         } else {
             
-            Mail::to($email)->send(new DemoMail($mailData));
+            Mail::to($email)->send(new DemoMail($recover));
             return response()->json($email,200);
-        }
+        }    
+        
+        
     }
 }
