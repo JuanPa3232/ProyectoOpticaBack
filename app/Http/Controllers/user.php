@@ -54,7 +54,7 @@ class user extends Controller
         $create->email = $data['email'];
         $create->phone = $data['phone'];
         $create->age = $data['age'];
-        $create->used = $data['used'];
+        $create->birth = $data['birth'];
         $create->password = $data['password'];
         $create->save();
         // Verificar que el correo electrónico es válido
@@ -78,7 +78,7 @@ class user extends Controller
            $update->email = $data['email'];
            $update->phone = $data['phone'];
            $update->age = $data['age'];
-           $update->used = $data['used'];
+           $update->birth = $data['birth'];
            $update->password = $data['password'];
            $update->save();
            return response()->json($update, 201);
