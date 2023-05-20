@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\users;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use App\Mail\DemoMail;
 use DB;
 
@@ -56,6 +57,7 @@ class user extends Controller
         $create->age = $data['age'];
         $create->birth = $data['birth'];
         $create->password = $data['password'];
+        $create->image_url = $data['image_url'];
         $create->save();
         // Verificar que el correo electrónico es válido
         if (!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
@@ -116,4 +118,29 @@ class user extends Controller
         
         
     }
+    public function uploadImage(Request $request)
+    {
+        if ($request->hasFile('file') && $request->file('file')->isValid()) {
+            $file = $request->file('file');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->storePubliclyAs('uploads/images', $filename);
+    
+            $imageUrl = '/storage/images/' . $filename;
+    
+            $user = Auth::user();
+            $user->image_url = $imageUrl;
+            $user->save();
+    
+            return response()->json([
+                'success' => true,
+                'imageUrl' => $imageUrl
+            ]);
+        }
+    
+        return response()->json([
+            'success' => false
+        ]);
+    }
+    
 }
+
