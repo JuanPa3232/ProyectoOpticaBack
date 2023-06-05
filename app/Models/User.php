@@ -26,7 +26,7 @@ class User extends Authenticatable
         'age',
         'phone',
         'password',
-        'image_url'
+        'photo'
         
     ];
 

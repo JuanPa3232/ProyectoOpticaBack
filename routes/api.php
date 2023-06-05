@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\user;
 use App\Mail\DemoMail;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -29,5 +30,5 @@ Route::post('/users/create',[user::class, 'create']);
 Route::put('/update/{id}', [user::class, 'update']);
 Route::post('/users/login', [user::class, 'login']);
 Route::post('/users/forgotpass', [user::class, 'forgotpass']);
-
+Route::post('/users/load/{id}', [user::class, 'uploadImage']);
 

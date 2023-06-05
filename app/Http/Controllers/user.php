@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Mail\DemoMail;
 use DB;
 
+
 class user extends Controller
 {
     public function allUsers(){
@@ -57,7 +58,7 @@ class user extends Controller
         $create->age = $data['age'];
         $create->birth = $data['birth'];
         $create->password = $data['password'];
-        $create->image_url = $data['image_url'];
+        $create->photo = $data['photo'];
         $create->save();
         // Verificar que el correo electrónico es válido
         if (!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
@@ -89,13 +90,26 @@ class user extends Controller
         $data = $request->json()->all();
         $email= $data['email'];
         $password = $data['password'];
-        $login=DB::table('users')
+        $check=DB::table('users')
+        ->select('photo')
+        ->where('email', $email)
+        ->where('password', $password)
+        ->get();
+        if($check->isEmpty()){
+            $login=DB::table('users')
         ->select('email','password')
         ->where('email', $email)
         ->where('password', $password)
         ->get();
+        }else{
+            $login=DB::table('users')
+        ->select('email','password','photo')
+        ->where('email', $email)
+        ->where('password', $password)
+        ->get();
+        }
         if ($login->isEmpty()) {
-            return response()->json(["message" => "El correo o la contraseña ingresados son incorrectos."],204);
+            return response()->json(["message" => "El correo o la contraseña son incorrectos."],204);
         } else {
             return response()->json($login,200);
         }
@@ -118,29 +132,7 @@ class user extends Controller
         
         
     }
-    public function uploadImage(Request $request)
-    {
-        if ($request->hasFile('file') && $request->file('file')->isValid()) {
-            $file = $request->file('file');
-            $filename = time() . '.' . $file->getClientOriginalExtension();
-            $file->storePubliclyAs('uploads/images', $filename);
     
-            $imageUrl = '/storage/images/' . $filename;
-    
-            $user = Auth::user();
-            $user->image_url = $imageUrl;
-            $user->save();
-    
-            return response()->json([
-                'success' => true,
-                'imageUrl' => $imageUrl
-            ]);
-        }
-    
-        return response()->json([
-            'success' => false
-        ]);
-    }
-    
+   
 }
 
